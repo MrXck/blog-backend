@@ -18,4 +18,6 @@ public class GetBlogByPageDTO {
     private Integer pageNum;
 
     private Integer blogId;
+
+    private Integer typeId;
 }

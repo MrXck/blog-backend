@@ -4,12 +4,8 @@ import com.blog.dto.archives.ArchivesDTO;
 import com.blog.dto.archives.GetArchivesDTO;
 import com.blog.service.BlogService;
 import com.blog.utils.NoAuthorization;
-import com.blog.utils.NotControllerResponseAdvice;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -22,7 +18,7 @@ public class ArchivesController {
 
     @PostMapping("/get")
     @NoAuthorization
-    public ArchivesDTO getArchivesByTime(GetArchivesDTO getArchivesDTO) {
+    public ArchivesDTO getArchivesByTime(@RequestBody GetArchivesDTO getArchivesDTO) {
         return blogService.getArchivesByTime(getArchivesDTO);
     }
 

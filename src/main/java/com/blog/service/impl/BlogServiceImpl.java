@@ -13,7 +13,6 @@ import com.blog.pojo.Blog;
 import com.blog.service.BlogService;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -23,6 +22,7 @@ public class BlogServiceImpl extends ServiceImpl<BlogMapper, Blog> implements Bl
     public BlogDTO getByPage(GetBlogByPageDTO getBlogByPageDTO) {
         String keyword = getBlogByPageDTO.getKeyword();
         Integer blogId = getBlogByPageDTO.getBlogId();
+        Integer typeId = getBlogByPageDTO.getTypeId();
         Page<Blog> page = new Page<>(1, getBlogByPageDTO.getPageSize());
 
         QueryWrapper<Blog> queryWrapper = new QueryWrapper<>();
@@ -33,6 +33,10 @@ public class BlogServiceImpl extends ServiceImpl<BlogMapper, Blog> implements Bl
 
         if (blogId != null) {
             queryWrapper.lt("id", blogId);
+        }
+
+        if (typeId != null) {
+            queryWrapper.eq("type_id", typeId);
         }
 
         queryWrapper.select("id", "title", "LEFT(content, 200) content", "create_time", "update_time", "type_id", "image");
@@ -46,7 +50,7 @@ public class BlogServiceImpl extends ServiceImpl<BlogMapper, Blog> implements Bl
 
     @Override
     public ArchivesDTO getArchivesByTime(GetArchivesDTO getArchivesDTO) {
-        LocalDate time = getArchivesDTO.getTime();
+        String time = getArchivesDTO.getTime();
         LambdaQueryWrapper<Blog> queryWrapper = new LambdaQueryWrapper<>();
 
         if (time != null) {
