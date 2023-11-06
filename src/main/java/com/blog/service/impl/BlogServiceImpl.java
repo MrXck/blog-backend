@@ -10,13 +10,20 @@ import com.blog.dto.blog.BlogDTO;
 import com.blog.dto.blog.GetBlogByPageDTO;
 import com.blog.mapper.BlogMapper;
 import com.blog.pojo.Blog;
+import com.blog.pojo.BlogType;
 import com.blog.service.BlogService;
+import com.blog.service.BlogTypeService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
 public class BlogServiceImpl extends ServiceImpl<BlogMapper, Blog> implements BlogService {
+
+    @Autowired
+    private BlogTypeService blogTypeService;
 
     @Override
     public BlogDTO getByPage(GetBlogByPageDTO getBlogByPageDTO) {
@@ -43,7 +50,28 @@ public class BlogServiceImpl extends ServiceImpl<BlogMapper, Blog> implements Bl
         queryWrapper.orderByDesc("create_time");
 
         BlogDTO blogDTO = new BlogDTO();
-        blogDTO.setPage(this.page(page, queryWrapper));
+        Page<Blog> page1 = this.page(page, queryWrapper);
+
+        List<Blog> records = page1.getRecords();
+
+        List<Integer> typeIds = new ArrayList<>();
+
+        for (Blog record : records) {
+            Integer typeId1 = record.getTypeId();
+            if (!typeIds.contains(typeId1)) {
+                typeIds.add(typeId1);
+            }
+        }
+
+        if (!typeIds.isEmpty()) {
+            LambdaQueryWrapper<BlogType> blogTypeLambdaQueryWrapper = new LambdaQueryWrapper<>();
+            blogTypeLambdaQueryWrapper.in(BlogType::getId, typeIds);
+            List<BlogType> list = blogTypeService.list(blogTypeLambdaQueryWrapper);
+
+            blogDTO.setBlogTypes(list);
+        }
+
+        blogDTO.setPage(page1);
 
         return blogDTO;
     }
