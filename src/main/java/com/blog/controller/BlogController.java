@@ -29,4 +29,10 @@ public class BlogController {
         blogDTO.setBlog(blogService.getById(blogId));
         return blogDTO;
     }
+    
+    @GetMapping("/count")
+    @NoAuthorization
+    public int count() {
+        return blogService.count();
+    }
 }
