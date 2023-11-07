@@ -18,8 +18,6 @@ public class BlogTypeController {
     @GetMapping("/all")
     @NoAuthorization
     public BlogTypeDTO all() {
-        BlogTypeDTO blogTypeDTO = new BlogTypeDTO();
-        blogTypeDTO.setBlogTypes(blogTypeService.list());
-        return blogTypeDTO;
+        return blogTypeService.all();
     }
 }
