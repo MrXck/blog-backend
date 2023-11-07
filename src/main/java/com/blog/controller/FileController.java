@@ -3,7 +3,6 @@ package com.blog.controller;
 import com.blog.exception.APIException;
 import com.blog.utils.Constant;
 import com.blog.utils.NoAuthorization;
-import com.blog.utils.NotControllerResponseAdvice;
 import com.blog.utils.UserThreadLocal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -12,8 +11,6 @@ import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.FileInputStream;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.UUID;
 
 @RestController
@@ -21,10 +18,7 @@ import java.util.UUID;
 public class FileController {
 
     @PostMapping(value = "/upload")
-    @NotControllerResponseAdvice
-    public Map<String, Object> upload(@RequestParam("file") MultipartFile multipartFile) throws Exception {
-        Map<String, Object> map = new HashMap<>();
-
+    public String upload(@RequestParam("file") MultipartFile multipartFile) throws Exception {
         File file = new File(Constant.PATH);
         if (!file.exists()) {
             file.mkdirs();
@@ -44,15 +38,11 @@ public class FileController {
             String path = UserThreadLocal.get().toString() + "_" + UUID.randomUUID() + "." + split[1];
             multipartFile.transferTo(new File(Constant.PATH + path));
 
-            map.put("success", 1);
-            map.put("url", "/file/download/" + path);
+            return "/file/download/" + path;
         } catch (Exception e) {
-            map.put("success", 0);
-            map.put("message", "文件上传错误");
             e.printStackTrace();
+            throw new APIException("上传失败");
         }
-
-        return map;
     }
 
     @GetMapping("/download/{filename}")
