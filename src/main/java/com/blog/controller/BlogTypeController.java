@@ -1,12 +1,14 @@
 package com.blog.controller;
 
+import com.blog.dto.type.AddBlogTypeDTO;
 import com.blog.dto.type.BlogTypeDTO;
+import com.blog.dto.type.UpdateBlogTypeDTO;
 import com.blog.service.BlogTypeService;
 import com.blog.utils.NoAuthorization;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/blogType")
@@ -25,5 +27,23 @@ public class BlogTypeController {
     @NoAuthorization
     public int count() {
         return blogTypeService.count();
+    }
+
+    @PostMapping("/add")
+    public String add(@RequestBody @Valid AddBlogTypeDTO addBlogTypeDTO) {
+        blogTypeService.add(addBlogTypeDTO);
+        return "";
+    }
+
+    @PostMapping("/update")
+    public String update(@RequestBody @Valid UpdateBlogTypeDTO updateBlogTypeDTO) {
+        blogTypeService.updateBlogType(updateBlogTypeDTO);
+        return "";
+    }
+
+    @GetMapping("/remove/{typeId}")
+    public String remove(@PathVariable("typeId") Integer typeId) {
+        blogTypeService.removeById(typeId);
+        return "";
     }
 }
