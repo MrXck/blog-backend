@@ -49,4 +49,10 @@ public class BlogController {
         blogService.updateBlog(updateBlogDTO);
         return "";
     }
+    
+    @GetMapping("/remove/{blogId}")
+    public String remove(@PathVariable("blogId") Integer blogId) {
+        blogService.removeById(blogId);
+        return "";
+    }
 }
