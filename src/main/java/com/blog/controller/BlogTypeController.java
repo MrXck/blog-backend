@@ -20,4 +20,10 @@ public class BlogTypeController {
     public BlogTypeDTO all() {
         return blogTypeService.all();
     }
+    
+    @GetMapping("/count")
+    @NoAuthorization
+    public int count() {
+        return blogTypeService.count();
+    }
 }
