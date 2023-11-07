@@ -16,6 +16,5 @@ public class AddBlogDTO {
     @NotNull(message = "typeId不能为空")
     private Integer typeId;
 
-
     private String image;
 }

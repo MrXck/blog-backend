@@ -4,9 +4,9 @@ import com.blog.dto.admin.AdminDTO;
 import com.blog.service.AdminService;
 import com.blog.utils.NoAuthorization;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/admin")
@@ -19,5 +19,11 @@ public class AdminController {
     @NoAuthorization
     public AdminDTO info() {
         return adminService.info();
+    }
+
+    @PostMapping("/login")
+    @NoAuthorization
+    public AdminDTO login(@RequestBody @Valid AdminDTO adminDTO) {
+        return adminService.login(adminDTO);
     }
 }

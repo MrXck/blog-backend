@@ -6,4 +6,6 @@ import com.blog.pojo.Admin;
 
 public interface AdminService extends IService<Admin> {
     AdminDTO info();
+
+    AdminDTO login(AdminDTO adminDTO);
 }
