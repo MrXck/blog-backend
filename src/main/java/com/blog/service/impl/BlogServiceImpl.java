@@ -2,6 +2,7 @@ package com.blog.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.blog.dto.archives.ArchivesDTO;
@@ -9,6 +10,7 @@ import com.blog.dto.archives.GetArchivesDTO;
 import com.blog.dto.blog.AddBlogDTO;
 import com.blog.dto.blog.BlogDTO;
 import com.blog.dto.blog.GetBlogByPageDTO;
+import com.blog.dto.blog.UpdateBlogDTO;
 import com.blog.mapper.BlogMapper;
 import com.blog.pojo.Blog;
 import com.blog.pojo.BlogType;
@@ -111,6 +113,19 @@ public class BlogServiceImpl extends ServiceImpl<BlogMapper, Blog> implements Bl
         blog.setCreateTime(LocalDateTime.now());
         blog.setUpdateTime(LocalDateTime.now());
         this.save(blog);
+    }
+
+    @Override
+    public void updateBlog(UpdateBlogDTO updateBlogDTO) {
+        LambdaUpdateWrapper<Blog> updateWrapper = new LambdaUpdateWrapper<>();
+        updateWrapper.eq(Blog::getId, updateBlogDTO.getId());
+        updateWrapper.set(Blog::getTitle, updateBlogDTO.getTitle());
+        updateWrapper.set(Blog::getContent, updateBlogDTO.getContent());
+        updateWrapper.set(Blog::getUpdateTime, LocalDateTime.now());
+        updateWrapper.set(Blog::getImage, updateBlogDTO.getImage());
+        updateWrapper.set(Blog::getTypeId, updateBlogDTO.getTypeId());
+
+        this.update(updateWrapper);
     }
 
 }

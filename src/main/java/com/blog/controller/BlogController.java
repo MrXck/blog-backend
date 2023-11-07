@@ -3,6 +3,7 @@ package com.blog.controller;
 import com.blog.dto.blog.AddBlogDTO;
 import com.blog.dto.blog.BlogDTO;
 import com.blog.dto.blog.GetBlogByPageDTO;
+import com.blog.dto.blog.UpdateBlogDTO;
 import com.blog.service.BlogService;
 import com.blog.utils.NoAuthorization;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,6 +41,12 @@ public class BlogController {
     @PostMapping("/add")
     public String add(@RequestBody @Valid AddBlogDTO addBlogDTO) {
         blogService.add(addBlogDTO);
+        return "";
+    }
+
+    @PostMapping("/update")
+    public String update(@RequestBody @Valid UpdateBlogDTO updateBlogDTO) {
+        blogService.updateBlog(updateBlogDTO);
         return "";
     }
 }

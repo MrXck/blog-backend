@@ -6,6 +6,7 @@ import com.blog.dto.archives.GetArchivesDTO;
 import com.blog.dto.blog.AddBlogDTO;
 import com.blog.dto.blog.BlogDTO;
 import com.blog.dto.blog.GetBlogByPageDTO;
+import com.blog.dto.blog.UpdateBlogDTO;
 import com.blog.pojo.Blog;
 
 import java.util.List;
@@ -18,4 +19,6 @@ public interface BlogService extends IService<Blog> {
     List all();
 
     void add(AddBlogDTO addBlogDTO);
+
+    void updateBlog(UpdateBlogDTO updateBlogDTO);
 }
