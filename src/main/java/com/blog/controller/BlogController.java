@@ -1,5 +1,6 @@
 package com.blog.controller;
 
+import com.blog.dto.blog.AddBlogDTO;
 import com.blog.dto.blog.BlogDTO;
 import com.blog.dto.blog.GetBlogByPageDTO;
 import com.blog.service.BlogService;
@@ -34,5 +35,11 @@ public class BlogController {
     @NoAuthorization
     public int count() {
         return blogService.count();
+    }
+
+    @PostMapping("/add")
+    public String add(@RequestBody @Valid AddBlogDTO addBlogDTO) {
+        blogService.add(addBlogDTO);
+        return "";
     }
 }

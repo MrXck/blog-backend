@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.blog.dto.archives.ArchivesDTO;
 import com.blog.dto.archives.GetArchivesDTO;
+import com.blog.dto.blog.AddBlogDTO;
 import com.blog.dto.blog.BlogDTO;
 import com.blog.dto.blog.GetBlogByPageDTO;
 import com.blog.mapper.BlogMapper;
@@ -13,9 +14,11 @@ import com.blog.pojo.Blog;
 import com.blog.pojo.BlogType;
 import com.blog.service.BlogService;
 import com.blog.service.BlogTypeService;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -98,6 +101,16 @@ public class BlogServiceImpl extends ServiceImpl<BlogMapper, Blog> implements Bl
     @Override
     public List all() {
         return this.baseMapper.getArchives();
+    }
+
+    @Override
+    public void add(AddBlogDTO addBlogDTO) {
+        Blog blog = new Blog();
+        BeanUtils.copyProperties(addBlogDTO, blog);
+
+        blog.setCreateTime(LocalDateTime.now());
+        blog.setUpdateTime(LocalDateTime.now());
+        this.save(blog);
     }
 
 }
