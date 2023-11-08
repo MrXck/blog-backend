@@ -1,6 +1,7 @@
 package com.blog.controller;
 
 import com.blog.dto.admin.AdminDTO;
+import com.blog.dto.admin.UpdateAdminDTO;
 import com.blog.service.AdminService;
 import com.blog.utils.NoAuthorization;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,5 +26,11 @@ public class AdminController {
     @NoAuthorization
     public AdminDTO login(@RequestBody @Valid AdminDTO adminDTO) {
         return adminService.login(adminDTO);
+    }
+
+    @PostMapping("/update")
+    public String update(@RequestBody @Valid UpdateAdminDTO updateAdminDTO) {
+        adminService.updateAdmin(updateAdminDTO);
+        return "";
     }
 }
