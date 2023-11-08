@@ -21,4 +21,6 @@ public interface BlogService extends IService<Blog> {
     void add(AddBlogDTO addBlogDTO);
 
     void updateBlog(UpdateBlogDTO updateBlogDTO);
+
+    BlogDTO getPage(GetBlogByPageDTO getBlogByPageDTO);
 }

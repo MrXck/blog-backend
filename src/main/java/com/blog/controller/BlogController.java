@@ -55,4 +55,10 @@ public class BlogController {
         blogService.removeById(blogId);
         return "";
     }
+
+    @PostMapping("/page")
+    @NoAuthorization
+    public BlogDTO page(@RequestBody @Valid GetBlogByPageDTO getBlogByPageDTO) {
+        return blogService.getPage(getBlogByPageDTO);
+    }
 }

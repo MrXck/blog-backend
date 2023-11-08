@@ -3,6 +3,7 @@ package com.blog.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.blog.dto.type.AddBlogTypeDTO;
 import com.blog.dto.type.BlogTypeDTO;
+import com.blog.dto.type.GetTypeByPageDTO;
 import com.blog.dto.type.UpdateBlogTypeDTO;
 import com.blog.pojo.BlogType;
 
@@ -12,4 +13,6 @@ public interface BlogTypeService extends IService<BlogType> {
     void add(AddBlogTypeDTO addBlogTypeDTO);
 
     void updateBlogType(UpdateBlogTypeDTO updateBlogTypeDTO);
+
+    BlogTypeDTO getByPage(GetTypeByPageDTO getTypeByPageDTO);
 }

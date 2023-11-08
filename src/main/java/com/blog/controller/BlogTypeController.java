@@ -2,6 +2,7 @@ package com.blog.controller;
 
 import com.blog.dto.type.AddBlogTypeDTO;
 import com.blog.dto.type.BlogTypeDTO;
+import com.blog.dto.type.GetTypeByPageDTO;
 import com.blog.dto.type.UpdateBlogTypeDTO;
 import com.blog.service.BlogTypeService;
 import com.blog.utils.NoAuthorization;
@@ -45,5 +46,11 @@ public class BlogTypeController {
     public String remove(@PathVariable("typeId") Integer typeId) {
         blogTypeService.removeById(typeId);
         return "";
+    }
+
+    @PostMapping("/page")
+    @NoAuthorization
+    public BlogTypeDTO page(@RequestBody @Valid GetTypeByPageDTO getTypeByPageDTO) {
+        return blogTypeService.getByPage(getTypeByPageDTO);
     }
 }

@@ -11,6 +11,7 @@ import com.blog.dto.blog.AddBlogDTO;
 import com.blog.dto.blog.BlogDTO;
 import com.blog.dto.blog.GetBlogByPageDTO;
 import com.blog.dto.blog.UpdateBlogDTO;
+import com.blog.exception.APIException;
 import com.blog.mapper.BlogMapper;
 import com.blog.pojo.Blog;
 import com.blog.pojo.BlogType;
@@ -110,6 +111,12 @@ public class BlogServiceImpl extends ServiceImpl<BlogMapper, Blog> implements Bl
         Blog blog = new Blog();
         BeanUtils.copyProperties(addBlogDTO, blog);
 
+        LambdaQueryWrapper<Blog> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.eq(Blog::getTitle, addBlogDTO.getTitle());
+        if (this.count(queryWrapper) != 0) {
+            throw new APIException("已经有这篇博客了");
+        }
+
         blog.setCreateTime(LocalDateTime.now());
         blog.setUpdateTime(LocalDateTime.now());
         this.save(blog);
@@ -117,6 +124,14 @@ public class BlogServiceImpl extends ServiceImpl<BlogMapper, Blog> implements Bl
 
     @Override
     public void updateBlog(UpdateBlogDTO updateBlogDTO) {
+
+        LambdaQueryWrapper<Blog> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.eq(Blog::getTitle, updateBlogDTO.getTitle());
+        queryWrapper.ne(Blog::getId, updateBlogDTO.getId());
+        if (this.count(queryWrapper) != 0) {
+            throw new APIException("已经有这篇博客了");
+        }
+
         LambdaUpdateWrapper<Blog> updateWrapper = new LambdaUpdateWrapper<>();
         updateWrapper.eq(Blog::getId, updateBlogDTO.getId());
         updateWrapper.set(Blog::getTitle, updateBlogDTO.getTitle());
@@ -126,6 +141,47 @@ public class BlogServiceImpl extends ServiceImpl<BlogMapper, Blog> implements Bl
         updateWrapper.set(Blog::getTypeId, updateBlogDTO.getTypeId());
 
         this.update(updateWrapper);
+    }
+
+    @Override
+    public BlogDTO getPage(GetBlogByPageDTO getBlogByPageDTO) {
+        String keyword = getBlogByPageDTO.getKeyword();
+        Page<Blog> page = new Page<>(getBlogByPageDTO.getPageNum(), getBlogByPageDTO.getPageSize());
+
+        QueryWrapper<Blog> queryWrapper = new QueryWrapper<>();
+
+        if (keyword != null && !keyword.isEmpty()) {
+            queryWrapper.like("title", keyword);
+        }
+
+        queryWrapper.select("id", "title", "LEFT(content, 200) content", "create_time", "update_time", "type_id", "image");
+        queryWrapper.orderByDesc("create_time");
+
+        BlogDTO blogDTO = new BlogDTO();
+        Page<Blog> page1 = this.page(page, queryWrapper);
+
+        List<Blog> records = page1.getRecords();
+
+        List<Integer> typeIds = new ArrayList<>();
+
+        for (Blog record : records) {
+            Integer typeId1 = record.getTypeId();
+            if (!typeIds.contains(typeId1)) {
+                typeIds.add(typeId1);
+            }
+        }
+
+        if (!typeIds.isEmpty()) {
+            LambdaQueryWrapper<BlogType> blogTypeLambdaQueryWrapper = new LambdaQueryWrapper<>();
+            blogTypeLambdaQueryWrapper.in(BlogType::getId, typeIds);
+            List<BlogType> list = blogTypeService.list(blogTypeLambdaQueryWrapper);
+
+            blogDTO.setBlogTypes(list);
+        }
+
+        blogDTO.setPage(page1);
+
+        return blogDTO;
     }
 
 }
