@@ -52,7 +52,8 @@ public class BlogServiceImpl extends ServiceImpl<BlogMapper, Blog> implements Bl
             queryWrapper.eq("type_id", typeId);
         }
 
-        queryWrapper.select("id", "title", "LEFT(content, 200) content", "create_time", "update_time", "type_id", "image");
+        queryWrapper.eq("is_show", true);
+        queryWrapper.select("id", "title", "LEFT(content, 200) content", "create_time", "update_time", "type_id", "image", "is_show");
         queryWrapper.orderByDesc("create_time");
 
         BlogDTO blogDTO = new BlogDTO();
@@ -93,6 +94,7 @@ public class BlogServiceImpl extends ServiceImpl<BlogMapper, Blog> implements Bl
         }
 
         queryWrapper.select(Blog.class, i -> !"content".equals(i));
+        queryWrapper.eq(Blog::getIsShow, true);
         queryWrapper.orderByDesc(Blog::getCreateTime);
 
         ArchivesDTO archivesDTO = new ArchivesDTO();
@@ -132,6 +134,8 @@ public class BlogServiceImpl extends ServiceImpl<BlogMapper, Blog> implements Bl
             throw new APIException("已经有这篇博客了");
         }
 
+        Boolean show = updateBlogDTO.getIsShow();
+
         LambdaUpdateWrapper<Blog> updateWrapper = new LambdaUpdateWrapper<>();
         updateWrapper.eq(Blog::getId, updateBlogDTO.getId());
         updateWrapper.set(Blog::getTitle, updateBlogDTO.getTitle());
@@ -139,6 +143,7 @@ public class BlogServiceImpl extends ServiceImpl<BlogMapper, Blog> implements Bl
         updateWrapper.set(Blog::getUpdateTime, LocalDateTime.now());
         updateWrapper.set(Blog::getImage, updateBlogDTO.getImage());
         updateWrapper.set(Blog::getTypeId, updateBlogDTO.getTypeId());
+        updateWrapper.set(show != null, Blog::getIsShow, show);
 
         this.update(updateWrapper);
     }
@@ -154,7 +159,7 @@ public class BlogServiceImpl extends ServiceImpl<BlogMapper, Blog> implements Bl
             queryWrapper.like("title", keyword);
         }
 
-        queryWrapper.select("id", "title", "LEFT(content, 200) content", "create_time", "update_time", "type_id", "image");
+        queryWrapper.select("id", "title", "create_time", "update_time", "type_id", "image", "content", "is_show");
         queryWrapper.orderByDesc("create_time");
 
         BlogDTO blogDTO = new BlogDTO();
@@ -182,6 +187,13 @@ public class BlogServiceImpl extends ServiceImpl<BlogMapper, Blog> implements Bl
         blogDTO.setPage(page1);
 
         return blogDTO;
+    }
+
+    @Override
+    public int countBlog() {
+        LambdaQueryWrapper<Blog> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.eq(Blog::getIsShow, true);
+        return this.count(queryWrapper);
     }
 
 }

@@ -12,5 +12,6 @@ public class Blog {
     private LocalDateTime createTime;
     private LocalDateTime updateTime;
     private Integer typeId;
+    private Boolean isShow;
     private String image;
 }

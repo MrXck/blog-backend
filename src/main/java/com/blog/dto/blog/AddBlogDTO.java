@@ -17,4 +17,6 @@ public class AddBlogDTO {
     private Integer typeId;
 
     private String image;
+
+    private Boolean isShow;
 }

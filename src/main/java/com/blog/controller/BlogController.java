@@ -35,7 +35,7 @@ public class BlogController {
     @GetMapping("/count")
     @NoAuthorization
     public int count() {
-        return blogService.count();
+        return blogService.countBlog();
     }
 
     @PostMapping("/add")

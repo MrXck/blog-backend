@@ -11,7 +11,7 @@
  Target Server Version : 50644 (5.6.44)
  File Encoding         : 65001
 
- Date: 08/11/2023 15:46:36
+ Date: 10/11/2023 11:39:32
 */
 
 SET NAMES utf8mb4;
@@ -54,6 +54,7 @@ CREATE TABLE `blog`  (
   `type_id` int(11) NULL DEFAULT NULL,
   `update_time` datetime NOT NULL,
   `image` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+  `is_show` tinyint(4) NOT NULL,
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `type`(`type_id`) USING BTREE,
   CONSTRAINT `type` FOREIGN KEY (`type_id`) REFERENCES `blog_type` (`id`) ON DELETE CASCADE ON UPDATE RESTRICT

@@ -20,4 +20,6 @@ public class UpdateBlogDTO {
     private Integer typeId;
 
     private String image;
+
+    private Boolean isShow;
 }
