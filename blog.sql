@@ -42,6 +42,8 @@ CREATE TABLE `admin`  (
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Compact;
 
+INSERT INTO `blog`.`admin` (`id`, `username`, `password`, `image`, `create_time`, `update_time`) VALUES (1, 'X.ck', 'a97be0b8761448bd54b40e483d69da52', NULL, '2023-11-07 10:39:19', '2023-11-08 15:36:51');
+
 -- ----------------------------
 -- Table structure for blog
 -- ----------------------------

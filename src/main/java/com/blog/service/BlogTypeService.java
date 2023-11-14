@@ -15,4 +15,8 @@ public interface BlogTypeService extends IService<BlogType> {
     void updateBlogType(UpdateBlogTypeDTO updateBlogTypeDTO);
 
     BlogTypeDTO getByPage(GetTypeByPageDTO getTypeByPageDTO);
+
+    BlogTypeDTO adminAll();
+
+    int countType();
 }

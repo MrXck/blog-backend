@@ -77,4 +77,17 @@ public class BlogTypeServiceImpl extends ServiceImpl<BlogTypeMapper, BlogType> i
 
         return blogTypeDTO;
     }
+
+    @Override
+    public BlogTypeDTO adminAll() {
+        List blogTypes = this.list();
+        BlogTypeDTO blogTypeDTO = new BlogTypeDTO();
+        blogTypeDTO.setBlogTypes(blogTypes);
+        return blogTypeDTO;
+    }
+
+    @Override
+    public int countType() {
+        return this.baseMapper.getAllBlogTypeWithCount().size();
+    }
 }

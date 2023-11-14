@@ -24,10 +24,16 @@ public class BlogTypeController {
         return blogTypeService.all();
     }
 
+    @GetMapping("/admin/all")
+    public BlogTypeDTO adminAll() {
+        return blogTypeService.adminAll();
+    }
+
+
     @GetMapping("/count")
     @NoAuthorization
     public int count() {
-        return blogTypeService.count();
+        return blogTypeService.countType();
     }
 
     @PostMapping("/add")
